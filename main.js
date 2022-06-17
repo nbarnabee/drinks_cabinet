@@ -9,7 +9,7 @@ let drinkList = [];
 const drinksContainer = document.querySelector(".card-container");
 
 function getDrinksByName() {
-  const searchTerm = document.querySelector("input").value;
+  const searchTerm = document.querySelector(".nameFinder").value;
   drinkList = [];
   drinksContainer.innerHTML = "";
   fetch(
@@ -97,6 +97,7 @@ function makeDrinkCardLarge(e) {
 }
 
 function makeDrinks(data) {
+  document.querySelector(".nameFinder").value = "";
   for (let i in data.drinks) {
     drinkList[i] = new Drink(
       data.drinks[i].strDrink,
