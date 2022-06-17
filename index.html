@@ -19,15 +19,150 @@
     <main>
       <section class="searchbar">
         <h1>Cocktail Recipe Encyclopedia</h1>
-        <input type="text" name="" value="" />
-        <select name="searchType" id="searchType">
-          <option value="" selected disabled hidden>
-            Select a search type
-          </option>
-          <option value="search.php?s=">By name</option>
-          <option value="filter.php?i=">By ingredient</option>
-        </select>
-        <button type="button" name="button">Get Recipes</button>
+        <input type="text" name="" value="" placeholder="Cocktail name" />
+        <button type="button" class="getByName-btn">Get Recipes</button>
+      </section>
+      <section>
+        <p>Or search by ingredients</p>
+        <form action="">
+          <fieldset>
+            <legend>Alcoholic:</legend>
+            <!-- <ul>
+              <p>Brandy</p>
+              <li>
+                <label><input type="checkbox" value="brandy" />Brandy</label>
+              </li>
+              <li>
+                <label
+                  ><input type="checkbox" value="apricot brandy" />Apricot
+                  brandy</label
+                >
+              </li>
+              <li>
+                <label
+                  ><input type="checkbox" value="apple brandy" />Apple
+                  brandy</label
+                >
+              </li>
+              <li>
+                <label><input type="checkbox" value="applejack" />Applejack</label>
+              </li>
+              <li>
+                <label
+                  ><input type="checkbox" value="cherry brandy" />Cherry
+                  brandy</label
+                >
+              </li>
+              <li>
+                <label
+                  ><input type="checkbox" value="coffee brandy" />Coffee
+                  Brandy</label
+                >
+              </li>
+              <li>
+                <label
+                  ><input type="checkbox" value="blackberry brandy" />Blackberry
+                  brandy</label
+                >
+              </li>
+            </ul> -->
+            <label
+              ><input
+                type="checkbox"
+                class="ingred-check"
+                value="brandy"
+              />Brandy</label
+            >
+            <label
+              ><input
+                type="checkbox"
+                class="ingred-check"
+                value="gin"
+              />Gin</label
+            >
+            <label
+              ><input
+                type="checkbox"
+                class="ingred-check"
+                value="rum"
+              />Rum</label
+            >
+            <label
+              ><input
+                type="checkbox"
+                class="ingred-check"
+                value="dry vermouth"
+              />Dry Vermouth</label
+            >
+            <label
+              ><input
+                type="checkbox"
+                class="ingred-check"
+                value="sweet vermouth"
+              />Sweet Vermouth</label
+            >
+            <label
+              ><input
+                type="checkbox"
+                class="ingred-check"
+                value="vodka"
+              />Vodka</label
+            >
+            <label
+              ><input
+                type="checkbox"
+                class="ingred-check"
+                value="scotch"
+              />Scotch</label
+            >
+            <label
+              ><input
+                type="checkbox"
+                class="ingred-check"
+                value="blended whiskey"
+              />Blended whiskey</label
+            >
+            <label
+              ><input
+                type="checkbox"
+                class="ingred-check"
+                value="triple sec"
+              />Triple Sec</label
+            >
+            <label
+              ><input
+                type="checkbox"
+                class="ingred-check"
+                value="bourbon"
+              />Bourbon</label
+            >
+            <label
+              ><input
+                type="checkbox"
+                class="ingred-check"
+                value="cognac"
+              />Cognac</label
+            >
+            <label
+            ><input
+              type="checkbox"
+              class="ingred-check"
+              value="tequila"
+            />Tequila</label
+          >
+          </fieldset>
+          <fieldset>
+            <legend>Non-alcoholic</legend>
+            <input
+              type="checkbox"
+              class="ingred-check"
+              value="lime juice"
+            />Lime juice</label
+          >
+          </fieldset>
+          <button type="button" class="getByIngredient-btn">Get Recipes</button>
+          <button type="reset" class="reset-btn">Reset</button>
+        </form>
       </section>
 
       <section class="card-container"></section>
@@ -48,6 +183,6 @@
 		</section> -->
     </main>
 
-    <script type="text/javascript" src="./oop-version.js"></script>
+    <script type="text/javascript" src="./main.js"></script>
   </body>
 </html>
