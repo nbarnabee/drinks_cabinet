@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="description"
+      content="Find and explore a library of cocktail recipes"
+    />
+    <meta name="keywords" content="cocktails, drinks, alcohol" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Cocktail Recipe Encylopedia</title>
+
+    <!-- external CSS link -->
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+
+  <body>
+    <main>
+      <section class="searchbar">
+        <h1>Cocktail Recipe Encyclopedia</h1>
+        <input type="text" name="" value="" />
+        <select name="searchType" id="searchType">
+          <option value="" selected disabled hidden>
+            Select a search type
+          </option>
+          <option value="search.php?s=">By name</option>
+          <option value="filter.php?i=">By ingredient</option>
+        </select>
+        <button type="button" name="button">Get Recipes</button>
+      </section>
+
+      <section class="card-container"></section>
+
+      <!-- <section class="card__big modal__body hidden">
+			<img src="" alt="">
+			<h2>Name</h2>
+			<section aria-labelledby="ingredients">
+				<h3>Ingredients</h3>
+				<ul id="ingredients"></ul>
+			</section>
+			<section aria-labelledby="instructions">
+				<h3>Instructions</h3>
+				<ol id="instructions">
+					<li class="glass"></li>
+				</ol>
+			</section>
+		</section> -->
+    </main>
+
+    <script type="text/javascript" src="./oop-version.js"></script>
+  </body>
+</html>
