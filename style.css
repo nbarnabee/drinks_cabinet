@@ -221,11 +221,9 @@ body {
   background-color: hsla(0, 0%, 97%, 1);
 }
 
-.card > p {
-  text-align: center;
-}
-
 /* ----- Specific elements -------- */
+
+/* ----  List container ----- */
 
 .card-container {
   max-width: 90%;
@@ -238,47 +236,47 @@ body {
   margin-top: 2rem;
 }
 
-.card--small {
+/* -------- List items ---------- */
+
+.card {
   display: flex;
-  gap: 10px;
+  flex-direction: column;
+  /* gap: 5px; */
   background-color: white;
-  width: min(400px, 90vw);
-  height: 150px;
+  width: 200px;
   box-shadow: 2px 3px 3px rgba(19, 18, 18, 0.2);
   transition: 0.2s;
 }
 
-.card--small:hover {
+.card:hover {
   transform: scale(1.03);
   box-shadow: 3px 5px 7px rgba(19, 18, 18, 0.4);
   cursor: pointer;
   transition: 0.2s;
 }
 
-.card--small__img {
-  height: 100%;
+.card__img {
+  max-width: 200px;
+  max-height: 200px;
+  height: auto;
+  width: auto;
 }
 
-.card--small__txt {
-  padding-top: 0.5rem;
+.card > figcaption {
   display: flex;
   flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding-block: 3px;
 }
 
-.card--small__title {
-  display: inline-block;
-  padding-right: 10px;
-}
+/* ------- Toggleable Modal ----------  */
 
-.card--small__list {
-  list-style: none;
-}
-
-.modal__body {
+.drink-modal {
   position: absolute;
   left: 50%;
   top: 3rem;
-  transform: translateX(-50%);
+  transform: translateX(100vw);
   width: 500px;
   min-height: 200px;
   max-height: 500px;
