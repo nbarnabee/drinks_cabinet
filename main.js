@@ -158,6 +158,7 @@ class DrinkListItem {
 /*  MAKING THE FULL DRINK OBJECT */
 
 function makeDrink(data) {
+  console.log(data);
   let drink = new Drink(
     data.strDrink,
     data.strGlass,
@@ -180,22 +181,34 @@ function getIngredients(source, target) {
 }
 
 /* This is taking the mess that is the way the cocktail DB handled ingredients and measures and turning it into a 2D Array with the following format:
-[["measure1", "ingred1"], ["measure2", "ingred2"], ....] 
+["measure1 ingred1", "measure2 ingred2"], ....] 
 }*/
 
 function getInstructions(source, target) {
-  let instructionList = [`Select a ${source.strGlass}`];
+  let instructionList = [];
   instructionList = instructionList.concat(source.strInstructions.split(". "));
   target.instructions = instructionList;
 }
-/* This takes the jumble of instructions and splits them into an array of individual sentences.  The first sentence will refer to the glass type. */
+/* This takes the jumble of instructions and splits them into an array of individual sentences.*/
+
+function makeListFromArray(source, target) {
+  let listItem;
+  document.getElementById(target).innerHTML = "";
+  source.forEach((a) => {
+    listItem = document.createElement("li");
+    if (Array.isArray(a)) listItem.innerText = a.join(" ");
+    else listItem.innerText = a;
+    document.getElementById(target).appendChild(listItem);
+  });
+}
 
 /*  DRINK CONSTRUCTOR FUNCTION and everything that goes along with it */
 
 class Drink {
-  constructor(name, glass, alcoholic, image) {
+  constructor(drink, id, glass, alcoholic, image) {
     /* all of the following are strings */
-    this.name = name;
+    this.drink = drink;
+    this.id = id;
     this.glass = glass;
     this.alcoholic = alcoholic;
     this.image = image;
@@ -204,8 +217,11 @@ class Drink {
   }
 
   makeDrinkCard() {
-    console.log(this.ingredients, this.instructions);
-    //document.querySelector(".drink-modal").classList.remove("modal-closed");
+    const modal = document.querySelector(".drink-modal");
+    document.getElementById("drink").textContent = this.drink;
+    makeListFromArray(this.ingredients, "ingredients");
+    makeListFromArray(this.instructions, "instructions");
+    modal.classList.remove("modal-closed");
   }
 }
 
