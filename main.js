@@ -168,6 +168,7 @@ function makeDrink(data) {
   console.log(data);
   let drink = new Drink(
     data.strDrink,
+    data.idDrink,
     data.strGlass,
     data.strAlcoholic,
     data.strDrinkThumb
@@ -224,11 +225,17 @@ class Drink {
   }
 
   makeDrinkCard() {
-    const modal = document.querySelector(".drink-modal");
     document.getElementById("drink").textContent = this.drink;
+    this.setImage();
     makeListFromArray(this.ingredients, "ingredients");
     makeListFromArray(this.instructions, "instructions");
-    modal.classList.remove("modal-closed");
+    document.querySelector(".drink-modal").classList.remove("modal-closed");
+  }
+
+  setImage() {
+    let drinkImage = document.createElement("img");
+    drinkImage.setAttribute("src", this.image);
+    document.querySelector(".modal__img").appendChild(drinkImage);
   }
 }
 
