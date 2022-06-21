@@ -1,4 +1,4 @@
-/* -------  THE SEARCH AND ALL IT ENTAILS -------- */
+/* -------  THE SEARCHES AND ALL THEY ENTAIL -------- */
 
 document.querySelector("input").value = "";
 document
@@ -12,7 +12,7 @@ const drinksContainer = document.querySelector(".card-container");
 
 /* Searching by name is very straightforward.  There's only one fetch request and the array that's returned includes full information about each drink.  Initially I stored it and used it to make the drinks, but now I am trying a different approach that involves storing less data and making more fetch requests. 
 
-We'll just make the minimal card and then do another fetch request based on the drink ID in order to produce the pop-up recipe card */
+We'll just make the minimal card and then do another fetch request based on the drink ID in order to produce the pop-up recipe card.  For some reason having it as a stand-alone function wasn't working, so I stuck it as a method in the drink card item... which I suppose is more OOP anyway.*/
 
 function getDrinksByName() {
   const searchTerm = document.querySelector(".nameFinder").value;
@@ -35,7 +35,7 @@ function getDrinksByName() {
     });
 }
 
-/* Searching by ingredient is much more difficult, as I have no intention of paying to get the multi-ingredient search option.  (Where's the fun in that?)  Instead I'm doing it "by hand," which means making multiple fetch requests and concatenating the data.   */
+/* Searching by ingredient is more difficult, as I have no intention of paying to get the multi-ingredient search option.  (Where's the fun in that?)  Instead I'm doing it "by hand," which means making multiple fetch requests and concatenating the data.   */
 
 async function getDrinksByIngredient() {
   drinksContainer.innerHTML = ""; // clear out old cards
@@ -125,7 +125,6 @@ function evaluateArrayLength(array) {
 function makeDrinkListItems(array) {
   let drinkList = [];
   array.forEach(function (a, i) {
-    console.log(a);
     drinkList[i] = new DrinkListItem(a.strDrink, a.idDrink, a.strDrinkThumb);
   });
   for (let drink of drinkList) {
@@ -144,57 +143,54 @@ class DrinkListItem {
     nameCard.innerHTML = `<img src=${this.image} class="card__img"><figcaption class="card__name"><h3>${this.drink}</h3></figcaption>`;
     nameCard.classList.add("card");
     drinksContainer.appendChild(nameCard);
-    nameCard.addEventListener("click", this.makeDrinkCard.bind(this));
+    nameCard.addEventListener("click", this.getDrinkById.bind(this));
   }
-  makeDrinkCard() {
-    // I should have a preexisting element that sits out of the window and is called up and populated when someone clicks on a drink
-    console.log(`The user selected ${this.drink}, id ${this.id}`);
+  getDrinkById() {
+    let id = this.id;
+    fetch(`https://www.thecocktaildb.com/api/json/v1/1/lookup.php?i=${id}`)
+      .then((res) => res.json())
+      .then((data) => makeDrink(data.drinks[0]))
+      .catch((err) => console.log(err));
   }
+  /* The API returns an object that contains an array that contains an object.  We only want that internal object, so we extract it from its wrapping and pass it along.  Initially I had set makeDrinkCard() as a method inside this object, but really they're two separate things, so time to pass it along to the code I already wrote */
 }
 
-/*  MAKING THE FULL DRINK OBJECTS  
-I am intending to take a new approach here.
-The following is legacy code.
-*/
+/*  MAKING THE FULL DRINK OBJECT */
 
-function makeDrinks(data) {
-  document.querySelector(".nameFinder").value = "";
-  for (let i in data.drinks) {
-    drinkList[i] = new Drink(
-      data.drinks[i].strDrink,
-      data.drinks[i].strGlass,
-      data.drinks[i].strAlcoholic,
-      data.drinks[i].strDrinkThumb
-    );
-    getIngredients(data.drinks[i], i);
-    getInstructions(data.drinks[i], i);
-  }
-  for (let drink of drinkList) {
-    drink.makeDrinkCardSmall();
-  }
+function makeDrink(data) {
+  let drink = new Drink(
+    data.strDrink,
+    data.strGlass,
+    data.strAlcoholic,
+    data.strDrinkThumb
+  );
+  getIngredients(data, drink);
+  getInstructions(data, drink);
+  drink.makeDrinkCard();
 }
 
-function getIngredients(obj, index) {
+function getIngredients(source, target) {
   let ingredients = [];
-  let ingredientVar;
-  let ingredientMeasureVar;
   for (let i = 1; i <= 15; i++) {
-    ingredientVar = `strIngredient${i}`;
-    ingredientMeasureVar = `strMeasure${i}`;
-    if (!obj[ingredientVar]) break;
-    else ingredients.push([obj[ingredientMeasureVar], obj[ingredientVar]]);
-    drinkList[index].ingredients = ingredients;
+    if (!source[`strIngredient${i}`]) break;
+    else
+      ingredients.push([source[`strMeasure${i}`], source[`strIngredient${i}`]]);
   }
+  target.ingredients = ingredients;
 }
 
-function getInstructions(obj, index) {
-  let instructionList = [];
-  instructionList = instructionList.concat(obj.strInstructions.split(". "));
-  drinkList[index].instructions = instructionList;
+/* This is taking the mess that is the way the cocktail DB handled ingredients and measures and turning it into a 2D Array with the following format:
+[["measure1", "ingred1"], ["measure2", "ingred2"], ....] 
+}*/
+
+function getInstructions(source, target) {
+  let instructionList = [`Select a ${source.strGlass}`];
+  instructionList = instructionList.concat(source.strInstructions.split(". "));
+  target.instructions = instructionList;
 }
+/* This takes the jumble of instructions and splits them into an array of individual sentences.  The first sentence will refer to the glass type. */
 
 /*  DRINK CONSTRUCTOR FUNCTION and everything that goes along with it */
-/* I really need to rethink this. */
 
 class Drink {
   constructor(name, glass, alcoholic, image) {
@@ -203,23 +199,20 @@ class Drink {
     this.glass = glass;
     this.alcoholic = alcoholic;
     this.image = image;
-    /* the Drink has additional properties -- this.ingredients and this.instructions -- which are added by the getIngredients and getInstructions functions
+    /* each drink will have additional properties -- this.ingredients and this.instructions -- which are added by the getIngredients and getInstructions functions
     ingredients is a 2D array with the following syntax: ["measure", "ingredient"] */
   }
 
-  makeDrinkCardSmall() {
-    let drinkCardSmall = document.createElement("figure");
-    drinkCardSmall.innerHTML = `<img src=${this.image} class="card--small__img"><figcaption class="card--small__txt"><h2 class="card--small__title">${this.name}</h2></figcaption>`;
-    drinkCardSmall.classList.add("card--small");
-    drinksContainer.appendChild(drinkCardSmall);
-    drinkCardSmall.addEventListener(
-      "click",
-      this.makeDrinkCardLarge.bind(this)
-    );
+  makeDrinkCard() {
+    console.log(this.ingredients, this.instructions);
+    //document.querySelector(".drink-modal").classList.remove("modal-closed");
   }
+}
 
-  makeDrinkCardLarge() {
-    // I should have a preexisting element that sits out of the window and is called up and populated when someone clicks on a drink
-    console.log(`The user selected ${this.name}`);
-  }
+/* -------- Controlling the modal --------- */
+
+document.querySelector(".closeModal-btn").addEventListener("click", closeModal);
+
+function closeModal() {
+  document.querySelector(".drink-modal").classList.add("modal-closed");
 }
