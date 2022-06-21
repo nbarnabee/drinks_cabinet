@@ -165,7 +165,6 @@ class DrinkListItem {
 /*  MAKING THE FULL DRINK OBJECT */
 
 function makeDrink(data) {
-  console.log(data);
   let drink = new Drink(
     data.strDrink,
     data.idDrink,
@@ -233,6 +232,7 @@ class Drink {
   }
 
   setImage() {
+    document.querySelector(".modal__img").innerHTML = "";
     let drinkImage = document.createElement("img");
     drinkImage.setAttribute("src", this.image);
     document.querySelector(".modal__img").appendChild(drinkImage);
