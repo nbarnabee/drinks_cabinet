@@ -63,18 +63,23 @@ async function getDrinksByIngredient() {
 
 If I want to keep working with the cocktail DB I will have to think of a way to pull out drinks that call for "whiskey" vs "whisky", etc; I could brute force it by simply setting it up so that, say, selecting an "orange liqueur" checkbox would send a fetch request for "triple sec," "cointreau," and "orange liqueur"
 
-One idea I had toyed with was for a fully combined array, which I thought could solve that problem... only it's been a few days and I no longer fully follow my own train of thought.  Oops.
+I could do that by concatenating the promises that I would get from, say, a fetch for "whiskey" and one for "whisky", then filtering out the duplicates.
 
-Old notes here:
-(promiseArray was what I initially called the promise bundle from the multi-ingredient fetch function)
+Then add it to combinedArray 
 
-  let fullyCombinedArray = [];
-    fullyCombinedArray = fullyCombinedArray.concat(
-      ...Object.values(promiseArray[i])
+
+function squashArrays(arr) {
+    let Array = [];
+    for (let i = 0; i < arr.length; i++)
+    squashedArray = squashedArray.concat(
+      ...Object.values(arr[i])
     );
-  }
+    return squashedArray.filter((a, i, arr) => arr.indexOf(a) === i);
+}
 
-    // fullyCombinedArray gives me an array of all of the objects, and is what I would need for dealing with the "whiskey/whisky" conundrum
+do something like that for each ingredient... or actually this is so much of a PITA that I might just want to host a combined array thing on my site.  Or do something else.  Not sure of the best approach.
+
+
 */
 
 function combinePromises(array) {
@@ -135,16 +140,13 @@ class DrinkListItem {
     this.image = image;
   }
   makeNameCard() {
-    let drinkCardSmall = document.createElement("figure");
-    drinkCardSmall.innerHTML = `<img src=${this.image} class="card--small__img"><figcaption class="card--small__txt"><h2 class="card--small__title">${this.drink}</h2></figcaption>`;
-    drinkCardSmall.classList.add("card--small");
-    drinksContainer.appendChild(drinkCardSmall);
-    drinkCardSmall.addEventListener(
-      "click",
-      this.makeDrinkCardLarge.bind(this)
-    );
+    let nameCard = document.createElement("figure");
+    nameCard.innerHTML = `<img src=${this.image} class="card__img"><figcaption class="card__name"><h3>${this.drink}</h3></figcaption>`;
+    nameCard.classList.add("card");
+    drinksContainer.appendChild(nameCard);
+    nameCard.addEventListener("click", this.makeDrinkCard.bind(this));
   }
-  makeDrinkCardLarge() {
+  makeDrinkCard() {
     // I should have a preexisting element that sits out of the window and is called up and populated when someone clicks on a drink
     console.log(`The user selected ${this.drink}, id ${this.id}`);
   }
@@ -152,6 +154,7 @@ class DrinkListItem {
 
 /*  MAKING THE FULL DRINK OBJECTS  
 I am intending to take a new approach here.
+The following is legacy code.
 */
 
 function makeDrinks(data) {
