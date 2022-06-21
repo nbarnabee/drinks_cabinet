@@ -1,3 +1,5 @@
+/* -------  THE SEARCH AND ALL IT ENTAILS -------- */
+
 document.querySelector("input").value = "";
 document
   .querySelector(".getByName-btn")
@@ -8,6 +10,8 @@ document
 let drinkList = [];
 const drinksContainer = document.querySelector(".card-container");
 
+/* Searching by name is very straightforward.  There's only one fetch request and the array that's returned includes full information about each drink.  Initially I stored it and used it to make the drinks, but now I am trying a different approach, that involves storing less data client side and making more fetch requests. */
+
 function getDrinksByName() {
   const searchTerm = document.querySelector(".nameFinder").value;
   drinkList = [];
@@ -17,6 +21,7 @@ function getDrinksByName() {
   )
     .then((res) => res.json())
     .then((data) => {
+      console.log(data);
       makeDrinks(data);
     })
     .catch((err) => {
@@ -25,6 +30,11 @@ function getDrinksByName() {
       document.querySelector("input").value = "";
     });
 }
+
+/* Searching by ingredient is much more difficult, as I have no intention of paying to get this search option.  So I have to do it by hand, which means making multiple fetch requests and concatenating the data.  
+
+This function is way too large and I need to divide it into sections.
+I could also funnel both fetching functions to the same place.  */
 
 async function getDrinksByIngredient() {
   drinksContainer.innerHTML = ""; // clear out old cards
@@ -38,8 +48,10 @@ async function getDrinksByIngredient() {
         ).then((response) => response.json())
       )
     );
+
     // so at this point we have promiseArray, which is an array of objects which are themselves arrays of objects.  I want to drill down to the internal objects and concat them into an array that contains only drinks found in both arrays
-    // If I want to keep working with the cocktail DB I will have to think of a way to pull out drinks that call for "whiskey" vs "whisky", etc; that would be a call for concatenation with removing duplicates (though there don't seem  to be duplicates:  that's why I need to do this in the first place!!!)
+
+    // If I want to keep working with the cocktail DB I will have to think of a way to pull out drinks that call for "whiskey" vs "whisky", etc; I could brute force it by simply setting it up so that, say, selecting an "orange liqueur" checkbox would send a fetch request for "triple sec," "cointreau," and "orange liqueur"
 
     let combinedArray = [];
     let fullyCombinedArray = [];
@@ -49,12 +61,15 @@ async function getDrinksByIngredient() {
         ...Object.values(promiseArray[i])
       );
     }
+    console.log("Combined array:", combinedArray);
+    console.log("Fully combined array:", fullyCombinedArray);
     // combinedArray gives me an array consisting of the arrays-of-objects returned from the promises
     // fullyCombinedArray gives me an array of all of the objects, and is what I would need for dealing with the "whiskey/whisky" conundrum
-    // getting combinedArray to where I need it is going to require a filter
+
     let filtered = combinedArray[0];
+    // I do this to solve the problem of what to do if the user only selects one ingredient to search for: the default value
+
     let ids = [];
-    // so if only one ingredient is chosen, it will just return the object array that lists all of those
 
     if (combinedArray.length > 1) {
       for (let i = 1; i < combinedArray.length; i++) {
@@ -62,7 +77,7 @@ async function getDrinksByIngredient() {
         filtered = combinedArray[0].filter((a) => ids.includes(a.idDrink));
       }
     }
-    console.log(filtered);
+    console.log("Filtered array:", filtered);
     makeDrinkNameList(filtered);
   } catch (error) {
     console.log(error);
