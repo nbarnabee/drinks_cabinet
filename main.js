@@ -25,6 +25,7 @@ function getDrinksByName() {
     // This returns an array containing a single object, with the key "drinks" and the value an array of objects, with each of these sub-objects containing information about a single drink.
     // We access the array of objects with "data.drinks" and send it away for processing.
     .then((data) => {
+      document.querySelector(".nameFinder").value = "";
       makeDrinkListItems(data.drinks);
     })
     .catch((err) => {
@@ -116,25 +117,40 @@ function evaluateArrayLength(array) {
   }
 }
 
-// Now, here is where I yet have some work to be done.  Setting eventListeners on these things isn't working right.  I need to copy my scheme of making Drink objects.
-
-function makeDrinkListItems(arr) {
-  arr.forEach((drink) => {
-    let drinkListItem = document.createElement("figure");
-    drinkListItem.innerHTML = `<img src=${drink.strDrinkThumb} class="card--small__img" id=${drink.idDrink}><figcaption class="card--small__txt"><h2 class="card--small__title">${drink.strDrink}</h2></figcaption>`;
-    drinkListItem.classList.add("card--small");
-    drinksContainer.appendChild(drinkListItem);
-    drinkListItem.addEventListener("click", makeDrinkCardLarge);
+function makeDrinkListItems(array) {
+  let drinkList = [];
+  array.forEach(function (a, i) {
+    console.log(a);
+    drinkList[i] = new DrinkListItem(a.strDrink, a.idDrink, a.strDrinkThumb);
   });
+  for (let drink of drinkList) {
+    drink.makeNameCard();
+  }
 }
 
-// need to shoehorn this into my objects somehow
-
-function makeDrinkCardLarge(e) {
-  console.log(e);
+class DrinkListItem {
+  constructor(drink, id, image) {
+    this.drink = drink;
+    this.id = id;
+    this.image = image;
+  }
+  makeNameCard() {
+    let drinkCardSmall = document.createElement("figure");
+    drinkCardSmall.innerHTML = `<img src=${this.image} class="card--small__img"><figcaption class="card--small__txt"><h2 class="card--small__title">${this.drink}</h2></figcaption>`;
+    drinkCardSmall.classList.add("card--small");
+    drinksContainer.appendChild(drinkCardSmall);
+    drinkCardSmall.addEventListener(
+      "click",
+      this.makeDrinkCardLarge.bind(this)
+    );
+  }
+  makeDrinkCardLarge() {
+    // I should have a preexisting element that sits out of the window and is called up and populated when someone clicks on a drink
+    console.log(`The user selected ${this.drink}, id ${this.id}`);
+  }
 }
 
-/*  MAKING THE DRINK OBJECTS  
+/*  MAKING THE FULL DRINK OBJECTS  
 I am intending to take a new approach here.
 */
 
@@ -175,6 +191,7 @@ function getInstructions(obj, index) {
 }
 
 /*  DRINK CONSTRUCTOR FUNCTION and everything that goes along with it */
+/* I really need to rethink this. */
 
 class Drink {
   constructor(name, glass, alcoholic, image) {
@@ -197,50 +214,9 @@ class Drink {
       this.makeDrinkCardLarge.bind(this)
     );
   }
-  // initially I had makeDrinkCardLarge() as part of the Drink object, but I think I will have to rethink this.  I have also duplicated makeDrinkCardSmall above...
 
   makeDrinkCardLarge() {
     // I should have a preexisting element that sits out of the window and is called up and populated when someone clicks on a drink
     console.log(`The user selected ${this.name}`);
   }
 }
-
-/*   ----  OLD CODE --------
-
-Here is the original "drinkCardSmall," before I standardized the style to make them look the same regardless of whether you'd searched by name or by ingredients.
- 
-  makeDrinkCardSmall() {
-    let drinkCardSmall = document.createElement("figure");
-    drinkCardSmall.innerHTML = `<img src=${this.image} class="card--small__img"><figcaption class="card--small__txt"><ul class="card--small__list"><li><h2 class="card--small__title">${this.name}</h2><small>(${this.alcoholic})</small></li><li>Rating</li></ul></figcaption>`;
-    drinkCardSmall.classList.add("card--small");
-    drinksContainer.appendChild(drinkCardSmall);
-    drinkCardSmall.addEventListener(
-      "click",
-      this.makeDrinkCardLarge.bind(this)
-    );
-  }
-
-
-This was the original way that I built the "drinkCardFull"
-
-   function makeList(arr, target) {
-        document.querySelector([target]).innerHTML = "";
-        arr.forEach(element => {
-          let listItem = document.createElement("li");
-          listItem.textContent = element;
-          document.querySelector([target]).appendChild(listItem);
-        })
-      };
-
-      document.querySelector("h2").textContent = data.drinks[0].strDrink;
-      document.querySelector("img").src = data.drinks[0].strDrinkThumb;
-      getIngredients();
-      getInstructions();
-      document.querySelector("input").value = "";
-    })
-
-
-
-
-
-*/
