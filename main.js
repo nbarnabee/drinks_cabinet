@@ -10,7 +10,9 @@ document
 let drinkList = [];
 const drinksContainer = document.querySelector(".card-container");
 
-/* Searching by name is very straightforward.  There's only one fetch request and the array that's returned includes full information about each drink.  Initially I stored it and used it to make the drinks, but now I am trying a different approach, that involves storing less data client side and making more fetch requests. */
+/* Searching by name is very straightforward.  There's only one fetch request and the array that's returned includes full information about each drink.  Initially I stored it and used it to make the drinks, but now I am trying a different approach that involves storing less data and making more fetch requests. 
+
+We'll just make the minimal card and then do another fetch request based on the drink ID in order to produce the pop-up recipe card */
 
 function getDrinksByName() {
   const searchTerm = document.querySelector(".nameFinder").value;
@@ -20,21 +22,19 @@ function getDrinksByName() {
     `https://www.thecocktaildb.com/api/json/v1/1/search.php?s=${searchTerm}`
   )
     .then((res) => res.json())
+    // This returns an array containing a single object, with the key "drinks" and the value an array of objects, with each of these sub-objects containing information about a single drink.
+    // We access the array of objects with "data.drinks" and send it away for processing.
     .then((data) => {
-      console.log(data);
-      makeDrinks(data);
+      makeDrinkListItems(data.drinks);
     })
     .catch((err) => {
+      drinksContainer.innerHTML =
+        "<p>We couldn't find any drink by that name.</p>";
       console.log(`error ${err}`);
-      alert("Sorry, we didn't find anything");
-      document.querySelector("input").value = "";
     });
 }
 
-/* Searching by ingredient is much more difficult, as I have no intention of paying to get this search option.  So I have to do it by hand, which means making multiple fetch requests and concatenating the data.  
-
-This function is way too large and I need to divide it into sections.
-I could also funnel both fetching functions to the same place.  */
+/* Searching by ingredient is much more difficult, as I have no intention of paying to get the multi-ingredient search option.  (Where's the fun in that?)  Instead I'm doing it "by hand," which means making multiple fetch requests and concatenating the data.   */
 
 async function getDrinksByIngredient() {
   drinksContainer.innerHTML = ""; // clear out old cards
@@ -48,57 +48,80 @@ async function getDrinksByIngredient() {
         ).then((response) => response.json())
       )
     );
-
-    // so at this point we have promiseArray, which is an array of objects which are themselves arrays of objects.  I want to drill down to the internal objects and concat them into an array that contains only drinks found in both arrays
-
-    // If I want to keep working with the cocktail DB I will have to think of a way to pull out drinks that call for "whiskey" vs "whisky", etc; I could brute force it by simply setting it up so that, say, selecting an "orange liqueur" checkbox would send a fetch request for "triple sec," "cointreau," and "orange liqueur"
-
-    let combinedArray = [];
-    let fullyCombinedArray = [];
-    for (let i = 0; i < promiseArray.length; i++) {
-      combinedArray = combinedArray.concat(Object.values(promiseArray[i]));
-      fullyCombinedArray = fullyCombinedArray.concat(
-        ...Object.values(promiseArray[i])
-      );
-    }
-    console.log("Combined array:", combinedArray);
-    console.log("Fully combined array:", fullyCombinedArray);
-    // combinedArray gives me an array consisting of the arrays-of-objects returned from the promises
-    // fullyCombinedArray gives me an array of all of the objects, and is what I would need for dealing with the "whiskey/whisky" conundrum
-
-    let filtered = combinedArray[0];
-    // I do this to solve the problem of what to do if the user only selects one ingredient to search for: the default value
-
-    let ids = [];
-
-    if (combinedArray.length > 1) {
-      for (let i = 1; i < combinedArray.length; i++) {
-        ids = combinedArray[i].map((a) => a.idDrink);
-        filtered = combinedArray[0].filter((a) => ids.includes(a.idDrink));
-      }
-    }
-    console.log("Filtered array:", filtered);
-    makeDrinkNameList(filtered);
-  } catch (error) {
-    console.log(error);
-  }
-}
-
-function makeDrinkNameList(drinksArray) {
-  if (drinksArray.length === 0) {
+    // At this point, promiseArray is an array of objects (each Promise is an object).  Those promise objects each contain an array of objects; each of these sub-objects contains the information about a particular drink.
+    // We send the array away for processing.
+    combinePromises(promiseArray);
+  } catch (err) {
     drinksContainer.innerHTML =
       "<p>We couldn't find any drinks with those ingredients.</p>";
-  } else if (drinksArray.length > 40) {
-    drinksContainer.innerHTML = `<p>${drinksArray.length} matches found.  You might want to narrow it down a bit.`;
-  } else {
-    makeDrinkListItems(drinksArray);
+    console.log(err);
   }
 }
 
+/* so at this point we have promiseArray, which is an array of objects which are themselves arrays of objects.  I want to drill down to the internal objects and concat them into an array that contains only the drinks common to all arrays
+
+If I want to keep working with the cocktail DB I will have to think of a way to pull out drinks that call for "whiskey" vs "whisky", etc; I could brute force it by simply setting it up so that, say, selecting an "orange liqueur" checkbox would send a fetch request for "triple sec," "cointreau," and "orange liqueur"
+
+One idea I had toyed with was for a fully combined array, which I thought could solve that problem... only it's been a few days and I no longer fully follow my own train of thought.  Oops.
+
+Old notes here:
+(promiseArray was what I initially called the promise bundle from the multi-ingredient fetch function)
+
+  let fullyCombinedArray = [];
+    fullyCombinedArray = fullyCombinedArray.concat(
+      ...Object.values(promiseArray[i])
+    );
+  }
+
+    // fullyCombinedArray gives me an array of all of the objects, and is what I would need for dealing with the "whiskey/whisky" conundrum
+*/
+
+function combinePromises(array) {
+  let combinedArray = [];
+  for (let i = 0; i < array.length; i++) {
+    combinedArray = combinedArray.concat(Object.values(array[i]));
+  }
+  // Now we have a concatenation of the arrays taken from each of the promise objects.  Each sub-array contains the drink data objects
+  // Arrays with length > 1 will have to be filtered; an array with length === 1 can skip that step, and an array with length 0 would have been caught earlier in the process.
+  if (combinedArray.length > 1) {
+    filterDrinkList(combinedArray);
+  } else evaluateArrayLength(combinedArray[0]);
+  // Note that here we are stripping off the "outer layer" and passing only the array of objects to the next function
+}
+
+//
+
+function filterDrinkList(array) {
+  let ids = [];
+  for (let i = 1; i < array.length; i++) {
+    ids = array[i].map((a) => a.idDrink);
+    filtered = array[0].filter((a) => ids.includes(a.idDrink));
+  }
+  evaluateArrayLength(filtered);
+}
+/* I'm a little proud of this one.  Any drink IDs that exist in all of the arrays will necessarily occur in the first array.  
+
+So we take the idDrink values from the second, third, etc. arrays, map each in turn, and check the elements of the first array to see if they are included. 
+
+Then we pass it on to the next step in evaluation.*/
+
+function evaluateArrayLength(array) {
+  if (array.length === 0) {
+    drinksContainer.innerHTML =
+      "<p>We couldn't find any drinks with those ingredients.</p>";
+  } else if (array.length > 40) {
+    drinksContainer.innerHTML = `<p>We found ${array.length} matches.  You might want to narrow it down a bit.`;
+  } else {
+    makeDrinkListItems(array);
+  }
+}
+
+// Now, here is where I yet have some work to be done.  Setting eventListeners on these things isn't working right.  I need to copy my scheme of making Drink objects.
+
 function makeDrinkListItems(arr) {
-  arr.forEach((element) => {
+  arr.forEach((drink) => {
     let drinkListItem = document.createElement("figure");
-    drinkListItem.innerHTML = `<img src=${element.strDrinkThumb} class="card--small__img"><figcaption class="card--small__txt"><h2 class="card--small__title">${element.strDrink}</h2></figcaption>`;
+    drinkListItem.innerHTML = `<img src=${drink.strDrinkThumb} class="card--small__img" id=${drink.idDrink}><figcaption class="card--small__txt"><h2 class="card--small__title">${drink.strDrink}</h2></figcaption>`;
     drinkListItem.classList.add("card--small");
     drinksContainer.appendChild(drinkListItem);
     drinkListItem.addEventListener("click", makeDrinkCardLarge);
@@ -110,6 +133,10 @@ function makeDrinkListItems(arr) {
 function makeDrinkCardLarge(e) {
   console.log(e);
 }
+
+/*  MAKING THE DRINK OBJECTS  
+I am intending to take a new approach here.
+*/
 
 function makeDrinks(data) {
   document.querySelector(".nameFinder").value = "";
@@ -147,7 +174,7 @@ function getInstructions(obj, index) {
   drinkList[index].instructions = instructionList;
 }
 
-/*  Drink as a constructor function/class */
+/*  DRINK CONSTRUCTOR FUNCTION and everything that goes along with it */
 
 class Drink {
   constructor(name, glass, alcoholic, image) {
@@ -211,8 +238,6 @@ This was the original way that I built the "drinkCardFull"
       getInstructions();
       document.querySelector("input").value = "";
     })
-
-
 
 
 
