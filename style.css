@@ -208,7 +208,7 @@ h2 {
   line-height: 1.2;
 }
 
-/* ----- Specific elements -------- */
+/* ------ General layout ------  */
 
 main {
   display: flex;
@@ -220,6 +220,12 @@ main {
 body {
   background-color: hsla(0, 0%, 97%, 1);
 }
+
+.card > p {
+  text-align: center;
+}
+
+/* ----- Specific elements -------- */
 
 .card-container {
   max-width: 90%;
@@ -292,14 +298,6 @@ body {
 
 #instructions > * + * {
   margin-top: 0.5rem;
-}
-
-.card > p {
-  text-align: center;
-}
-
-.hidden {
-  visibility: hidden;
 }
 
 @media (min-height: 700px) {
