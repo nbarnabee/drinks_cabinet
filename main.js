@@ -7,8 +7,15 @@ document
 document
   .querySelector(".getByIngredient-btn")
   .addEventListener("click", getDrinksByIngredient);
+document.querySelector(".reset-btn").addEventListener("click", resetAll);
 let drinkList = [];
 const drinksContainer = document.querySelector(".card-container");
+
+function resetAll() {
+  drinkList = [];
+  document.querySelector(".nameFinder").value = "";
+  drinksContainer.innerHTML = "";
+}
 
 /* Searching by name is very straightforward.  There's only one fetch request and the array that's returned includes full information about each drink.  Initially I stored it and used it to make the drinks, but now I am trying a different approach that involves storing less data and making more fetch requests. 
 
