@@ -44,11 +44,10 @@ body {
 .card {
   display: flex;
   flex-direction: column;
-  /* gap: 5px; */
   background-color: white;
   width: 200px;
   box-shadow: 2px 3px 3px rgba(19, 18, 18, 0.2);
-  transition: 0.2s;
+  transition: 0.3s;
 }
 
 .card:hover {
@@ -73,7 +72,9 @@ body {
   padding-block: 3px;
 }
 
-/* ------- Toggleable Modal ----------  */
+/* ------- Toggleable Modal ----------  
+I think I might convert this to grid or something, as I'm not entirely happy with the layout
+*/
 
 .drink-modal {
   display: flex;
@@ -88,8 +89,8 @@ body {
   overflow-y: auto;
 }
 
-.drink-modal > * + * {
-  margin-top: 1rem;
+.modal-closed {
+  transform: translateX(100vw);
 }
 
 .modal__img {
@@ -104,8 +105,12 @@ body {
   max-width: 100%;
 }
 
-.modal-closed {
-  transform: translateX(100vw);
+.modal__text {
+  padding-left: 12px;
+}
+
+.modal__text > * {
+  margin-top: 1rem;
 }
 
 #ingredients {
@@ -115,10 +120,6 @@ body {
 }
 
 #instructions {
-  max-width: 50ch;
+  max-width: 70ch;
   padding-left: 15px;
-}
-
-#instructions > * + * {
-  margin-top: 0.5rem;
 }
