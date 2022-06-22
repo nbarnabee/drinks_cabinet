@@ -8,7 +8,7 @@ In its current form, this project pulls information from the [CocktailDB API]("h
 
 - [x] Search for cocktails by name
 - [x] Filter cocktails by ingredient
-- [x] See full cocktail recipe
+- [x] Display full cocktail recipe
 - [] Save favorite recipes
 - [] Save a list of ingredients
 - [] Use your ingredients list to return a list of drinks you can make
@@ -17,6 +17,7 @@ In its current form, this project pulls information from the [CocktailDB API]("h
 ### To do:
 
 - [] Improve UI
+- [] Expand and organize list of searchable ingredients
 - [] Improve search function to take into account the DB's inconsistencies
 
 
