@@ -194,7 +194,7 @@ function getIngredients(source, target) {
 function getInstructions(source, target) {
   let instructionList = [];
   instructionList = instructionList.concat(source.strInstructions.split(". "));
-  target.instructions = instructionList;
+  target.instructions = instructionList.filter((a) => a !== "");
 }
 /* This takes the jumble of instructions and splits them into an array of individual sentences.*/
 
