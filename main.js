@@ -8,9 +8,10 @@ document
   .querySelector(".getByIngredient-btn")
   .addEventListener("click", getDrinksByIngredient);
 document.querySelector(".reset-btn").addEventListener("click", resetAll);
-const drinkList = [];
+let drinkList = [];
 const userInput = document.querySelector(".ingredient-search-bar");
 const drinksContainer = document.querySelector(".card-container");
+userInput.value = "";
 
 function resetAll() {
   drinkList = [];
@@ -70,6 +71,7 @@ async function getDrinksByIngredient() {
     );
     // At this point, promiseArray is an array of objects (each Promise is an object).  Those promise objects each contain an array of objects; each of these sub-objects contains the information about a particular drink.
     // We send the array away for processing.
+    userInput.value = "";
     combinePromises(promiseArray);
   } catch (err) {
     drinksContainer.innerHTML =
