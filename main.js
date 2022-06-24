@@ -8,11 +8,13 @@ document
   .querySelector(".getByIngredient-btn")
   .addEventListener("click", getDrinksByIngredient);
 document.querySelector(".reset-btn").addEventListener("click", resetAll);
-let drinkList = [];
+const drinkList = [];
+const userInput = document.querySelector(".ingredient-search-bar");
 const drinksContainer = document.querySelector(".card-container");
 
 function resetAll() {
   drinkList = [];
+  userInput.value = "";
   document.querySelector(".nameFinder").value = "";
   drinksContainer.innerHTML = "";
 }
@@ -48,6 +50,16 @@ async function getDrinksByIngredient() {
   drinksContainer.innerHTML = ""; // clear out old cards
   let ingredArr = Array.from(document.getElementsByClassName("ingred-check"));
   ingredArr = ingredArr.filter((a) => a.checked === true);
+  // Because I have added a search bar, I need to add its value to the array.  But since the checkboxes are pushing objects into the array, I can't just take the straight value.
+  // I also don't want to add it to the array if it's empty.
+  // One thing I'll say for the CocktailDB is that they clearly handle matters of capitalization and spacing on their end.  Nice
+  if (document.querySelector(".ingredient-search-bar").value) {
+    let userInput = {
+      value: document.querySelector(".ingredient-search-bar").value,
+    };
+    ingredArr.push(userInput);
+  }
+  console.log(ingredArr);
   try {
     let promiseArray = await Promise.all(
       ingredArr.map((a) =>
