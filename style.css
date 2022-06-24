@@ -123,3 +123,18 @@ I think I might convert this to grid or something, as I'm not entirely happy wit
   max-width: 70ch;
   padding-left: 15px;
 }
+
+@media (max-width: 400px) {
+  .drink-modal {
+    flex-direction: column;
+  }
+
+  .modal__text,
+  #instructions {
+    padding-left: 0;
+  }
+
+  #ingredients {
+    column-count: 1;
+  }
+}
