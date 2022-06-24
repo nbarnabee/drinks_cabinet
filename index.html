@@ -162,6 +162,18 @@
           >
           </fieldset>
           <label for="ingredient">Another ingredient:<input type="text" class="ingredient-search-bar"></label>
+          
+    <div class="search-container">
+      <input
+        type="text"
+        name="ingredient"
+        id="ingredient"
+        placeholder="Ingredient"
+      />
+      <div class="suggestions">
+        <ul class="suggestions-list"></ul>
+      </div>
+    </div>
           <button type="button" class="getByIngredient-btn">Get Recipes</button>
           <button type="reset" class="reset-btn">Reset</button>
         </form>
@@ -189,5 +201,6 @@
     </main>
 
     <script type="text/javascript" src="./main.js"></script>
+    <script src="./search.js"></script>
   </body>
 </html>
