@@ -210,7 +210,7 @@ function getInstructions(source, target) {
   instructionList = instructionList.concat(source.strInstructions.split(". "));
   target.instructions = instructionList.filter((a) => a !== "");
 }
-/* This takes the jumble of instructions and splits them into an array of individual sentences.*/
+/* This takes the jumble of instructions and splits them into an array of individual sentences.  I found that some instruction lists included empty sentences, so have filtered them out.*/
 
 function makeListFromArray(source, target) {
   let listItem;
