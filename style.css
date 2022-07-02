@@ -173,7 +173,7 @@ input {
   top: 60px;
 }
 
-ul {
+.suggestions-list {
   display: none;
   list-style-type: none;
   padding: 0;
@@ -196,8 +196,4 @@ ul li {
 
 ul li:hover {
   background-color: rgb(231, 220, 220);
-}
-
-input {
-  border-bottom: 2px solid black;
 }
