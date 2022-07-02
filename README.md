@@ -90,9 +90,9 @@ function filterDrinkList(array) {
 
 ### Dealing with inconsistencies
 
-The CocktailDB allows subscribers to upload new recipes, and there seems to be very little interest in maintaining consistency.  Thus, a search for "whiskey" and a search for "whisky" will produce different results.  Also, ingredients tend to be inputted by brand name; thus a search for "triple sec" will return a different set of results than a search for "cointreau" which will also be different from "orange liqueur," although all three are variations on the same thing.
+The CocktailDB allows subscribers to upload new recipes, and there seems to be very little interest in maintaining consistency.  Thus, a search for "whiskey" and a search for "whisky" will produce different results.  Equally, "lime" and "lime juice" return mutually exclusive recipe lists.
 
-Because I would like to return the widest possible results, and not be bound to, say, insisting that a margarita could only be made with Triple Sec, I have to come up with an option that will search for "related" ingredients, concatenate the results, and then introduce them to the concatenation/filtering process outlined above.
+Because I would like to return the widest possible results, and not be bound to, say, insisting that "whiskey" and "whisky" are two different ingredients, I have to come up with an option that will search for "related" ingredients, concatenate the results, and then introduce them to the concatenation/filtering process outlined above.
 
 So far, I haven't come up with a good solution.
 
