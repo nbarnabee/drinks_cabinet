@@ -19,15 +19,15 @@ In its current form, this project pulls information from the [CocktailDB API]("h
 - [] Improve UI
 - [] Expand and organize list of searchable ingredients
 - [] Improve search function to take into account the DB's inconsistencies
-
+- [] Add pagination
 
 ## Challenges
 
-The main challenges that I have faced while working on this project involve dealing with the CocktailDB itself.  
+The main challenges that I have faced while working on this project involve dealing with the CocktailDB itself.
 
 ### Building an ingredient list
 
-If I were to build my own database of cocktail recipes, I would store the measures and ingredients either in arrays or as key:value pairs in an object.  The CocktailDB opted to store them separately, as key:value pairs in the following format: `strIngredient1: tequila` and a corresponding `strMeasure1: 1 measure.`  Each drink object contains 15 of these strIngredient/Measure keys, though the vast majority of them are empty.
+If I were to build my own database of cocktail recipes, I would store the measures and ingredients either in arrays or as key:value pairs in an object. The CocktailDB opted to store them separately, as key:value pairs in the following format: `strIngredient1: tequila` and a corresponding `strMeasure1: 1 measure.` Each drink object contains 15 of these strIngredient/Measure keys, though the vast majority of them are empty.
 
 In order to build a list of ingredients, I extracted the values (if they existed), from the object I received from the CocktailDB and pushed them into a two-dimensional array, which I then attached to the drink objects that I had built to contain the information attached to each drink.
 
@@ -41,11 +41,11 @@ function getIngredients(source, target) {
   }
   target.ingredients = ingredients;
 }
-``` 
+```
 
 ### Multi-ingredient searches
 
-Although the CocktailDB offers multi-ingredient services as a paid feature, I had no intention of paying for it (besides, where's the fun in that?).  I did want to enable a multi-ingredient search, however. I opted to set up a search function that made multiple fetch requests to the DB, then bundled the results and passed them to additional functions, which would concatenate the data into a multidimensional array, then filter for the objects that were common to all of the arrays, and finally return those results.
+Although the CocktailDB offers multi-ingredient services as a paid feature, I had no intention of paying for it (besides, where's the fun in that?). I did want to enable a multi-ingredient search, however. I opted to set up a search function that made multiple fetch requests to the DB, then bundled the results and passed them to additional functions, which would concatenate the data into a multidimensional array, then filter for the objects that were common to all of the arrays, and finally return those results.
 
 ```
 async function getDrinksByIngredient() {
@@ -90,9 +90,8 @@ function filterDrinkList(array) {
 
 ### Dealing with inconsistencies
 
-The CocktailDB allows subscribers to upload new recipes, and there seems to be very little interest in maintaining consistency.  Thus, a search for "whiskey" and a search for "whisky" will produce different results.  Equally, "lime" and "lime juice" return mutually exclusive recipe lists.
+The CocktailDB allows subscribers to upload new recipes, and there seems to be very little interest in maintaining consistency. Thus, a search for "whiskey" and a search for "whisky" will produce different results. Equally, "lime" and "lime juice" return mutually exclusive recipe lists.
 
 Because I would like to return the widest possible results, and not be bound to, say, insisting that "whiskey" and "whisky" are two different ingredients, I have to come up with an option that will search for "related" ingredients, concatenate the results, and then introduce them to the concatenation/filtering process outlined above.
 
 So far, I haven't come up with a good solution.
-
