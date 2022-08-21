@@ -18,6 +18,8 @@ function resetAll() {
   userInput.value = "";
   document.querySelector(".nameFinder").value = "";
   drinksContainer.innerHTML = "";
+  const suggestions = document.querySelector(".suggestions-list");
+  suggestions.classList.remove("has-suggestions");
 }
 
 /* Searching by name is very straightforward.  There's only one fetch request and the array that's returned includes full information about each drink.  Initially I stored it and used it to make the drinks, but now I am trying a different approach that involves storing less data and making more fetch requests. 
@@ -51,7 +53,7 @@ async function getDrinksByIngredient() {
   drinksContainer.innerHTML = ""; // clear out old cards
   let ingredArr = Array.from(document.getElementsByClassName("ingred-check"));
   ingredArr = ingredArr.filter((a) => a.checked === true);
-  // Because I have added a search bar, I need to add its value to the array.  But since the checkboxes are pushing objects into the array, I can't just take the straight value.
+  // Because I have added a search bar, I need to add its value to the array.  But since the checkboxes are pushing objects into the array, I can't just take the straight value from the input box.  It needs to follow the same convention.
   // I also don't want to add it to the array if it's empty.
   // One thing I'll say for the CocktailDB is that they clearly handle matters of capitalization and spacing on their end.  Nice
   if (document.querySelector(".ingredient-search-bar").value) {
@@ -130,6 +132,8 @@ function filterDrinkList(array) {
 
 So we take the idDrink values from the second, third, etc. arrays, map each in turn, and check the elements of the first array to see if they are included. 
 
+But on further evalution, this isn't working right.
+
 Then we pass it on to the next step in evaluation.*/
 
 function evaluateArrayLength(array) {
@@ -142,6 +146,8 @@ function evaluateArrayLength(array) {
     makeDrinkListItems(array);
   }
 }
+
+/* Note to self:  learn how to handle pagination.  Actually that may be tough if I'm not working from my own database.  */
 
 function makeDrinkListItems(array) {
   let drinkList = [];
@@ -239,7 +245,8 @@ class Drink {
 
   makeDrinkCard() {
     document.getElementById("drink").textContent = this.drink;
-    this.setImage();
+    // this.setImage();
+    // actually the image often looks terrible on the large card so forget it
     makeListFromArray(this.ingredients, "ingredients");
     makeListFromArray(this.instructions, "instructions");
     document.querySelector(".drink-modal").classList.remove("modal-closed");
