@@ -3,11 +3,11 @@ const suggestions = document.querySelector(".suggestions-list");
 
 const ingredientsList = [
   "Brandy",
-  "Brandy, Apricot",
-  "Vermouth, Dry",
-  "Vermouth, Sweet",
+  "Apricot Brandy",
+  "Dry Vermouth",
+  "Sweet Vermouth",
   "Vodka",
-  "Vodka, Lemon",
+  "Lemon Vodka",
   "Whiskey",
   "Triple Sec",
   "Cognac",
