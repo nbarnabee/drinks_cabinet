@@ -121,18 +121,22 @@ function combinePromises(array) {
 //
 
 function filterDrinkList(array) {
-  let ids = [];
+  let ids = [],
+    filtered = [];
+  console.log(array);
   for (let i = 1; i < array.length; i++) {
     ids = array[i].map((a) => a.idDrink);
     filtered = array[0].filter((a) => ids.includes(a.idDrink));
   }
+  console.log(filtered);
   evaluateArrayLength(filtered);
 }
+
+// This isn't working properly for some reason.  The first and the last arrays are being computed properly, but the middle are sometimes being ignored.
+
 /* I'm a little proud of this one.  Any drink IDs that exist in all of the arrays will necessarily occur in the first array.  
 
 So we take the idDrink values from the second, third, etc. arrays, map each in turn, and check the elements of the first array to see if they are included. 
-
-But on further evalution, this isn't working right.
 
 Then we pass it on to the next step in evaluation.*/
 
