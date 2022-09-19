@@ -5,6 +5,8 @@ const homeController = require("../controllers/home");
 // const { ensureAuth } = require("../middleware/auth");
 
 router.get("/", homeController.getIndex);
+router.get("/new", homeController.recipeForm);
+router.post("/new", homeController.addRecipe);
 
 // router.get("/login", authController.getLogin);
 // router.post("/login", authController.postLogin);
