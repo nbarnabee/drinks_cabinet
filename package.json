@@ -4,16 +4,17 @@
   "description": "Build your liquor cabinet, discover cocktail recipes, save your favorites, and drink to excess",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon server.js"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/nbarnabee/drinks_cabinet.git"
   },
   "keywords": [
-    "\"cocktails\"",
-    "\"liquor\"",
-    "\"drinks\""
+    "cocktails",
+    "liquor",
+    "drinks"
   ],
   "author": "Nicole Barnabee",
   "license": "MIT",
