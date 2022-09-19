@@ -11,7 +11,7 @@ const mainRoutes = require("./routes/main");
 require("dotenv").config({ path: "./config/.env" });
 // require("./config/passport")(passport);
 
-//connectDB();
+connectDB();
 
 app.set("view engine", "ejs");
 app.use(express.static("public"));
