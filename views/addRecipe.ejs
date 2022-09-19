@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Add recipe</title>
+  <link rel="stylesheet" href="css/reset.css">
+  <link rel="stylesheet" href="css/new.css">
+</head>
+
+<body>
+
+  <form action="/new" method="POST">
+    <label for="recipe">Recipe</label><input type="text" name="name" id="recipe">
+    <label for="category">Category</label>
+    <select name="category" id="category">
+      <option value="Aperitif">Aperitif</option>
+      <option value="Champagne Cocktail">Champagne Cocktail</option>
+      <option value="Hot Drink">Hot Drink</option>
+      <option value="Long Drink">Long Drink</option>
+      <option value="Long and Creamy">Long and Creamy</option>
+      <option value="Non-Alcoholic">Non-Alcoholic</option>
+      <option value="Punch/Cup">Punch/Cup</option>
+      <option value="Short Drink">Short Drink</option>
+      <option value="Short and Creamy">Short and Creamy</option>
+    </select>
+    <label for="sub-category">Sub-category</label>
+    <input type="text" name="subcategory" id="sub-category">
+    <label for="flavour">Flavour</label><input type="text" name="flavour" id="flavour">
+    <label for="alcohol">Alcohol</label>
+    <input type="number" name="alcohol" id="alcohol">
+    <label for="glass">Glass</label>
+    <select name="glass" id="glass">
+      <option value="Cocktail">Cocktail (C)</option>
+      <option value="Rocks/Whisky">Whisky (R)</option>
+      <option value="Highball">Highball (H)</option>
+      <option value="Collins">Collins (CO)</option>
+      <option value="Pilsner">Pilsner (Pi)</option>
+      <option value="Fluted champagne">Fluted champagne (F)</option>
+      <option value="Goblet">Goblet (G)</option>
+      <option value="Wine">Wine (W)</option>
+      <option value="Snifter">Snifter/Brandy Balloon (B)</option>
+      <option value="Double cocktail">Double cocktail (D)</option>
+      <option value="Champagne saucer">Champagne saucer (CS)</option>
+      <option value="Poco (Pina Colada)">Poco or Pina Colada (P)</option>
+      <option value="Liqueur">Liqueur (L)</option>
+      <option value="Shot glass">Shot glass (S)</option>
+    </select>
+    <p>Ingredients:</p>
+    <ul id="ingredient-list">
+      <li>
+        <div>
+          <input type="text" name="ingredient" placeholder="ingredient">
+          <input type="text" name="measure" placeholder="measure">
+        </div>
+      </li>
+    </ul>
+    <button type="button" id="add-ingredient">Add ingredient</button>
+    <label for="instructions">Instructions</label>
+    <textarea name="instructions" id="instructions" cols="30" rows="10"></textarea>
+    <button>Submit</button>
+  </form>
+
+  <script src="js/addIngred.js"></script>
+</body>
+
+</html>
