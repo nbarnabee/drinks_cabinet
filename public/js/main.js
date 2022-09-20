@@ -62,7 +62,6 @@ async function getDrinksByIngredient() {
     };
     ingredArr.push(userInput);
   }
-  console.log(ingredArr);
   try {
     let promiseArray = await Promise.all(
       ingredArr.map((a) =>
@@ -123,20 +122,19 @@ function combinePromises(array) {
 function filterDrinkList(array) {
   let ids = [],
     filtered = [];
-  console.log(array);
   for (let i = 1; i < array.length; i++) {
     ids = array[i].map((a) => a.idDrink);
     filtered = array[0].filter((a) => ids.includes(a.idDrink));
+    array[0] = filtered;
   }
-  console.log(filtered);
   evaluateArrayLength(filtered);
 }
 
-// This isn't working properly for some reason.  The first and the last arrays are being computed properly, but the middle are sometimes being ignored.
-
 /* I'm a little proud of this one.  Any drink IDs that exist in all of the arrays will necessarily occur in the first array.  
 
-So we take the idDrink values from the second, third, etc. arrays, map each in turn, and check the elements of the first array to see if they are included. 
+So we take the idDrink values from the second, third, etc. arrays, map each in turn, and check the elements of the first array to see if they are included.  However, my initial write did screw this up a bit:  I continued to check against the contents of the original array, not the filtered array, which meant that many drinks would be returned that had some, but not all, of the ingredients.
+
+The function as it is now will return drinks that contain ALL of the specified ingredients, but it might be useful to bear in mind how it had previously worked, if I want to allow for a more flexible search.  Just remove array[0] = filtered.
 
 Then we pass it on to the next step in evaluation.*/
 
