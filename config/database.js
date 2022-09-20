@@ -1,12 +1,22 @@
 const MongoClient = require("mongodb").MongoClient;
+const assert = require("assert");
 
-const dbConnect = function () {
-  MongoClient.connect(process.env.DB_STRING)
-    .then((client) => {
-      console.log("Connected to database");
-      db = client.db("drinks_cabinet");
-    })
-    .catch((error) => console.log(error));
+let connection = [];
+
+establishConnection = function (callback) {
+  MongoClient.connect(process.env.DB_STRING, function (err, db) {
+    assert.equal(null, err);
+    connection = db;
+    console.log(`Connection established`);
+    if (typeof callback === "function" && callback) callback(connection);
+  });
 };
 
-module.exports = dbConnect;
+function getConnection() {
+  return connection;
+}
+
+module.exports = {
+  establishConnection: establishConnection,
+  getConnection: getConnection,
+};

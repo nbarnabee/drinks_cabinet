@@ -2,17 +2,16 @@ const express = require("express");
 const app = express();
 const passport = require("passport");
 const session = require("express-session");
-const MongoClient = require("mongodb").MongoClient;
 //const MongoStore = require("connect-mongo")(session);
 // const flash = require("express-flash");
 const logger = require("morgan");
-const connectDB = require("./config/database");
+const db = require("./config/database");
 const mainRoutes = require("./routes/main");
 
 require("dotenv").config({ path: "./config/.env" });
 // require("./config/passport")(passport);
 
-connectDB();
+db.establishConnection();
 
 app.set("view engine", "ejs");
 app.use(express.static("public"));
