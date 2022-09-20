@@ -22,7 +22,7 @@ module.exports = {
           ingredientObj[a] = req.body.measure[i];
         });
       const newRecipe = {
-        name: req.body.recipe,
+        name: req.body.name,
         category: req.body.category,
         "sub-category": req.body.subcategory,
         favorited: 0, // For future use
