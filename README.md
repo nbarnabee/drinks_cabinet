@@ -2,7 +2,7 @@
 
 ## About the project
 
-In its current form, this project pulls information from the [CocktailDB API]("https://www.thecocktaildb.com/api.php"). The data formatting in the API, and the lack of consistency with regards to ingredients, causes me certain difficulties, and I'm tempted to compile my own DB in the future.
+In its original (and current) form, this project pulls information from the [CocktailDB API]("https://www.thecocktaildb.com/api.php"), allowing users to search for cocktail recipes by name or by ingredient. Unfortunately, the poor data modelling and inconsistencies associated with that API caused me so many headaches that I decided to compile my own DB.  I am also in the process of building out a proper backend for the project, that will allow for logged in users to save information, write comments and rate drinks.
 
 ### Planned features:
 
@@ -18,7 +18,7 @@ In its current form, this project pulls information from the [CocktailDB API]("h
 
 - [] Improve UI
 - [] Expand and organize list of searchable ingredients
-- [] Improve search function to take into account the DB's inconsistencies
+- [] Expand my own recipe DB and migrate search functionality
 - [] Add pagination
 
 ## Challenges
@@ -79,14 +79,17 @@ function combinePromises(array) {
 }
 
 function filterDrinkList(array) {
-  let ids = [];
+  let ids = [],
+    filtered = [];
   for (let i = 1; i < array.length; i++) {
     ids = array[i].map((a) => a.idDrink);
     filtered = array[0].filter((a) => ids.includes(a.idDrink));
+    array[0] = filtered;
   }
   evaluateArrayLength(filtered);
 }
 ```
+
 
 ### Dealing with inconsistencies
 
