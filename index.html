@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="description" content="Find and explore a library of cocktail recipes" />
+  <meta name="keywords" content="cocktails, drinks, alcohol" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>The Drinks Cabinet</title>
+
+  <link rel="stylesheet" href="./public/css/reset.css" />
+  <link rel="stylesheet" href="./public/css/search.css" />
+
+</head>
+
+<body>
+  <main>
+    <section class="searchbar">
+      <h1>The Drinks Cabinet</h1>
+      <input type="text" class="nameFinder" name="" value="" placeholder="Cocktail name" />
+      <button type="button" class="getByName-btn">Find it</button>
+    </section>
+    <section>
+      <p>Or search by ingredient</p>
+      <form action="">
+        <fieldset>
+          <legend>Alcoholic:</legend>
+          <label><input type="checkbox" class="ingred-check" value="brandy" />Brandy</label>
+          <label><input type="checkbox" class="ingred-check" value="gin" />Gin</label>
+          <label><input type="checkbox" class="ingred-check" value="rum" />Rum</label>
+          <label><input type="checkbox" class="ingred-check" value="dry vermouth" />Dry Vermouth</label>
+          <label><input type="checkbox" class="ingred-check" value="sweet vermouth" />Sweet Vermouth</label>
+          <label><input type="checkbox" class="ingred-check" value="vodka" />Vodka</label>
+          <label><input type="checkbox" class="ingred-check" value="scotch" />Scotch</label>
+          <label><input type="checkbox" class="ingred-check" value="blended whiskey" />Blended whiskey</label>
+          <label><input type="checkbox" class="ingred-check" value="triple sec" />Triple Sec</label>
+          <label><input type="checkbox" class="ingred-check" value="bourbon" />Bourbon</label>
+          <label><input type="checkbox" class="ingred-check" value="cognac" />Cognac</label>
+          <label><input type="checkbox" class="ingred-check" value="tequila" />Tequila</label>
+
+          <label><input type="checkbox" class="ingred-check" value="cointreau" />Cointreau</label>
+
+          <label><input type="checkbox" class="ingred-check" value="campari" />Campari</label>
+
+          <label><input type="checkbox" class="ingred-check" value="jack daniels" />Jack Daniel's</label>
+          <label><input type="checkbox" class="ingred-check" value="grand marnier" />Grand Marnier</label>
+
+          <label><input type="checkbox" class="ingred-check" value="bitters" />Angostura bitters</label>
+        </fieldset>
+        <fieldset>
+          <legend>Non-alcoholic</legend>
+          <label><input type="checkbox" class="ingred-check" value="lime juice" />Lime juice</label>
+        </fieldset>
+        <!-- <label for="ingredient">Another ingredient:<input type="text" class="ingredient-search-bar"></label> -->
+
+        <div class="search-container">
+          <label for="ingredient">Another ingredient:</label>
+          <input type="text" class="ingredient-search-bar" name="ingredient" id="ingredient" />
+          <div class="suggestions">
+            <ul class="suggestions-list"></ul>
+          </div>
+        </div>
+        <button type="button" class="getByIngredient-btn">Get Recipes</button>
+        <button type="reset" class="reset-btn">Reset</button>
+      </form>
+    </section>
+
+    <section class="card-container"></section>
+
+    <section aria-labelledby="drink" class="drink-modal modal-closed">
+      <!-- <div class="modal__img">
+    </div>
+      decided against using the image on the recipe card -->
+      <div class="modal__text">
+        <h2 id="drink"></h2>
+        <section aria-labelledby="ingredients">
+          <h3>Ingredients</h3>
+          <ul id="ingredients"></ul>
+        </section>
+        <section aria-labelledby="instructions">
+          <h3>Instructions</h3>
+          <ol id="instructions">
+          </ol>
+        </section>
+        <button type="button" class="closeModal-btn">Close</button>
+      </div>
+    </section>
+  </main>
+
+  <script type="text/javascript" src="./public/js/main.js"></script>
+  <script type="text/javascript" src="./public/js/search.js"></script>
+</body>
+
+</html>
