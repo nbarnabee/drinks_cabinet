@@ -1,5 +1,7 @@
 # drinks_cabinet
 
+Live at:  https://nbarnabee.github.io/drinks_cabinet/
+
 ## About the project
 
 In its original (and current) form, this project pulls information from the [CocktailDB API]("https://www.thecocktaildb.com/api.php"), allowing users to search for cocktail recipes by name or by ingredient. Unfortunately, the poor data modelling and inconsistencies associated with that API caused me so many headaches that I decided to compile my own DB.  I am also in the process of building out a proper backend for the project, that will allow for logged in users to save information, write comments and rate drinks.
